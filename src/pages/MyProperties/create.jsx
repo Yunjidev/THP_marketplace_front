@@ -53,19 +53,18 @@ function CreateProperty() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+  
     const formData = new FormData();
     formData.append('property[title]', title);
     formData.append('property[price]', price);
     formData.append('property[description]', description);
-    formData.append('property[superficie]', superficie); // Ajout des nouveaux champs
-    formData.append('property[num_rooms]', numRooms);
+    formData.append('property[superficie]', superficie);  // Ajout de superficie
+    formData.append('property[num_rooms]', numRooms);  // Ajout de numRooms
     formData.append('property[furnished]', furnished);
-    formData.append('property[category]', category);
     formData.append('property[user_id]', user.id);
-    formData.append('image', image);
-
-
+    formData.append('property[image]', image);
+    formData.append('property[category]', category);
+  
     try {
       const response = await fetch(API_URL + '/properties', {
         method: 'POST',
@@ -74,12 +73,14 @@ function CreateProperty() {
         },
         body: formData,
       });
-
+  
       if (response.ok) {
         console.log('Le bien a été ajouté avec succès');
         navigate(`/myproperties/${user.id}`);
       } else {
         console.error("Erreur lors de l'ajout du bien");
+        const errorText = await response.text();
+        console.error('Détails de l\'erreur :', errorText);
       }
     } catch (error) {
       console.error("Erreur lors de l'ajout du bien :", error);
@@ -87,79 +88,92 @@ function CreateProperty() {
   }
 
   return (
-    <div>
-      <h2>Ajoutez un nouveau bien</h2>
-      <form  encType="multipart/form-data" onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Titre :</label>
+    <div className="container mx-auto mt-8">
+      <h2 className="text-3xl text-center font-semibold mb-4">Ajoutez un nouveau bien :</h2>
+      <form className="max-w-md mx-auto bg-white p-6 rounded-md shadow-md" encType="multipart/form-data" onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label htmlFor="title" className="block text-gray-700 font-bold mb-2">Titre :</label>
           <input
             type="text"
             id="title"
             value={title}
             onChange={handleTitleChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
           />
         </div>
-        <div>
-          <label htmlFor="price">Price :</label>
+        <div className="mb-4">
+          <label htmlFor="price" className="block text-gray-700 font-bold mb-2">Prix :</label>
           <input
             type="number"
-            id="content"
+            id="price"
             value={price}
             onChange={handlePriceChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
           />
         </div>
-        <div>
-          <label htmlFor="description">Description :</label>
+        <div className="mb-4">
+          <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Description :</label>
           <textarea
             id="description"
             value={description}
             onChange={handleDescriptionChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
           />
         </div>
-        <div>
-          <label htmlFor="image">image:</label>
+        <div className="mb-4">
+          <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image :</label>
           <input
-          type="file"
-          name="image"
-          onChange={handleImageChange} />
+            type="file"
+            name="image"
+            onChange={handleImageChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
+          />
         </div>
-        <div>
-          <label htmlFor="superficie">Superficie (m²) :</label>
+        <div className="mb-4">
+          <label htmlFor="superficie" className="block text-gray-700 font-bold mb-2">Superficie (m²) :</label>
           <input
             type="number"
             id="superficie"
             value={superficie}
             onChange={handleSuperficieChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
           />
         </div>
-        <div>
-          <label htmlFor="numRooms">Nombre de pièces :</label>
+        <div className="mb-4">
+          <label htmlFor="numRooms" className="block text-gray-700 font-bold mb-2">Nombre de pièces :</label>
           <input
             type="number"
             id="numRooms"
             value={numRooms}
             onChange={handleNumRoomsChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
           />
         </div>
-        <div>
-          <label htmlFor="furnished">Meublé :</label>
+        <div className="mb-4">
+          <label htmlFor="furnished" className="flex items-center text-gray-700 font-bold">
+            <input
+              type="checkbox"
+              id="furnished"
+              checked={furnished}
+              onChange={handleFurnishedChange}
+              className="mr-2"
+            />
+            Meublé
+          </label>
+        </div>
+        <div className="mb-4">
+          <label htmlFor="category" className="block text-gray-700 font-bold mb-2">Catégorie :</label>
           <input
-            type="checkbox"
-            id="furnished"
-            checked={furnished}
-            onChange={handleFurnishedChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="category">Autres :</label>
-           <input
             type="text"
             id="category"
             value={category}
             onChange={handleCategoryChange}
+            className="w-full border border-gray-300 p-2 rounded-md"
           />
         </div>
-        <button type="submit">Ajouter</button>
+        <button type="submit" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
+          Ajouter
+        </button>
       </form>
     </div>
   );

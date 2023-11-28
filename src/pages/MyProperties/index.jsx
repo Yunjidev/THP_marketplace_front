@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 
 import { API_URL } from "../../stores/apiUrl";
 
-
 import UpdateProperty from "./update";
 import DestroyProperty from "../../components/MyProperties/destroy";
 
@@ -11,57 +10,64 @@ const MyProperties = () => {
   const id = useParams().id;
   const [myProperties, setMyProperties] = useState([]);
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(API_URL + "/properties", {
-          method: 'get',
-          headers: {
-            // 'Authorization': `Bearer ${jwtToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        if (response.ok) {
-          const jsonData = await response.json();
-          const reversedData = jsonData.reverse();
-          setMyProperties(reversedData.filter(element => element.user_id == id))
-        } else {
-          throw new Error('Erreur lors de la requête');
+  const fetchData = async () => {
+    try {
+      const response = await fetch(API_URL + "/properties", {
+        method: 'get',
+        headers: {
+          // 'Authorization': `Bearer ${jwtToken}`,
+          'Content-Type': 'application/json'
         }
-      } catch (error) {
-        console.error('Erreur de requête : ', error)
+      });
+      if (response.ok) {
+        const jsonData = await response.json();
+        const reversedData = jsonData.reverse();
+        setMyProperties(reversedData.filter(element => element.user_id == id))
+      } else {
+        throw new Error('Erreur lors de la requête');
       }
-    };
+    } catch (error) {
+      console.error('Erreur de requête : ', error)
+    }
+  };
 
-    useEffect(() => {
-    fetchData()
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const handlePropertyDeleted = async () => {
-    // Call this function after property is successfully deleted
-    await fetchData(); // Fetch updated list of properties
+    // Call this function after the property is successfully deleted
+    await fetchData(); // Fetch the updated list of properties
   };
 
-
-
   return (
-    <>
-    <div>Mes annonces</div>
-    {myProperties.map(property => {
-        return (
-          <div key={property.id}>
-            <p>annonce n° : {property.id}</p>
-            <p>titre : {property.title} </p>
-            <p>description : {property.description}</p>
-            <p>prix : {property.price}</p>
-            <img src={property.image} alt={property.title} />
-            <Link to={`/updateproperty/${property.id}`}>Modifier ce bien</Link>
-            <DestroyProperty propertyId={property.id} onDelete={handlePropertyDeleted} />            <p>*******************</p>
+    <div className="container mx-auto mt-8">
+      <Link to="/createproperty" className="block w-full mb-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-center">
+        Ajouter un bien
+      </Link>
+      <h2 className="text-3xl text-center font-semibold mb-4">Mes annonces :</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {myProperties.map(property => (
+          <div key={property.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+            <img src={property.image} alt={property.title} className="w-full h-48 object-cover" />
+            <div className="p-6">
+              <p className="text-gray-200 mb-2">Annonce n° : {property.id}</p>
+              <p className="text-gray-200 mb-2">Description : {property.description}</p>
+              <p className="text-gray-200 mb-2">Superficie : {property.superficie}</p>
+              <p className="text-gray-200 mb-2">Nombre de pièces : {property.num_rooms}</p>
+              <p className="text-gray-200 mb-2">Meublé : {property.furnished ? "Oui" : "Non"}</p>
+              <p className="text-gray-200 mb-2">Catégorie : {property.category}</p>
+              <p className="text-green-500 mb-2">Prix : {property.price}</p>
+              <div className="flex justify-between items-center mt-4">
+                <Link to={`/updateproperty/${property.id}`} className="text-blue-500 hover:underline">Modifier ce bien</Link>
+                <DestroyProperty propertyId={property.id} onDelete={handlePropertyDeleted} />
+              </div>
+            </div>
           </div>
-        )
-      })}
-      <Link to="/createproperty">Ajouter un bien</Link>
-    </>
-  )
+        ))}
+      </div>
+    </div>
+  );
 }
 
-export default MyProperties
+export default MyProperties;

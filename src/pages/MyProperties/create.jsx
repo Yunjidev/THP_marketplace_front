@@ -1,5 +1,6 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAtom } from 'jotai';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,6 +20,36 @@ function CreateProperty() {
   const [country, setCountry] = useState('');
   const [user] = useAtom(userAtom);
   const navigate = useNavigate();
+  const [countries, setCountries] = useState([]);
+  
+  const fetchCountries = async () => {
+    try {
+      const response = await fetch(API_URL + '/countries', {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
+      });
+  
+      console.log('Statut de la réponse :', response.status);
+  
+      if (response.ok) {
+        const jsonData = await response.json();
+        console.log('Pays récupérés :', jsonData);
+  
+        if (Array.isArray(jsonData)) {
+          setCountries(jsonData);
+        } else {
+          console.error('Les données renvoyées pour les pays ne sont pas une liste :', jsonData);
+        }
+      } else {
+        throw new Error("Erreur lors de la récupération des pays");
+      }
+    } catch (error) {
+      console.error('Erreur de requête pour les pays :', error);
+    }
+  };
+  
+  
   
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
@@ -76,7 +107,7 @@ function CreateProperty() {
     formData.append('property[category]', category);
     formData.append('property[city]', city);
     formData.append('property[country]', country);
-
+    
     
     try {
       const response = await fetch(API_URL + '/properties', {
@@ -99,6 +130,10 @@ function CreateProperty() {
       console.error("Erreur lors de l'ajout du bien :", error);
     }
   }
+  useEffect(() => {
+    // Appelez la fonction de récupération des pays au montage du composant
+    fetchCountries();
+  }, []);
   
   return (
     <div className="container mx-auto mt-8">
@@ -114,6 +149,7 @@ function CreateProperty() {
     className="w-full border border-gray-300 p-2 rounded-md"
     />
     </div>
+    
     <div className="mb-4">
     <label htmlFor="price" className="block text-gray-700 font-bold mb-2">Prix :</label>
     <input
@@ -124,6 +160,7 @@ function CreateProperty() {
     className="w-full border border-gray-300 p-2 rounded-md"
     />
     </div>
+    
     <div className="mb-4">
     <label htmlFor="description" className="block text-gray-700 font-bold mb-2">Description :</label>
     <textarea
@@ -133,6 +170,7 @@ function CreateProperty() {
     className="w-full border border-gray-300 p-2 rounded-md"
     />
     </div>
+    
     <div className="mb-4">
     <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Image :</label>
     <input
@@ -142,6 +180,7 @@ function CreateProperty() {
     className="w-full border border-gray-300 p-2 rounded-md"
     />
     </div>
+    
     <div className="mb-4">
     <label htmlFor="superficie" className="block text-gray-700 font-bold mb-2">Superficie (m²) :</label>
     <input
@@ -152,6 +191,7 @@ function CreateProperty() {
     className="w-full border border-gray-300 p-2 rounded-md"
     />
     </div>
+    
     <div className="mb-4">
     <label htmlFor="numRooms" className="block text-gray-700 font-bold mb-2">Nombre de pièces :</label>
     <input
@@ -162,6 +202,7 @@ function CreateProperty() {
     className="w-full border border-gray-300 p-2 rounded-md"
     />
     </div>
+    
     <div className="mb-4">
     <label htmlFor="furnished" className="flex items-center text-gray-700 font-bold">
     <input
@@ -174,43 +215,54 @@ function CreateProperty() {
     Meublé
     </label>
     </div>
-    <div className="mb-4">
-    <label htmlFor="city" className="block text-gray-700 font-bold mb-2">Ville :</label>
-    <input
-    type="text"
-    id="city"
-    value={city}
-    onChange={handleCityChange}
-    className="w-full border border-gray-300 p-2 rounded-md"
-    />
-    </div>
+    
     
     <div className="mb-4">
     <label htmlFor="country" className="block text-gray-700 font-bold mb-2">Pays :</label>
-    <input
-    type="text"
+    <select
     id="country"
     value={country}
     onChange={handleCountryChange}
-    className="w-full border border-gray-300 p-2 rounded-md"/>
-    </div>
-    <div className="mb-4">
-    <label htmlFor="category" className="block text-gray-700 font-bold mb-2">Catégorie :</label>
-    <input
-    type="text"
-    id="category"
-    value={category}
-    onChange={handleCategoryChange}
     className="w-full border border-gray-300 p-2 rounded-md"
-    />
-    </div>
-    <button type="submit" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
-    Ajouter
-    </button>
-    </form>
-    </div>
-    );
-  }
-  
-  export default CreateProperty;
-  
+    >
+    <option value="">Sélectionnez un pays</option>
+    {countries.map((countryOption) => (
+      <option key={countryOption.id} value={countryOption.name}>
+      {countryOption.name}
+      </option>
+      ))}
+      </select>
+      </div>
+      
+      <div className="mb-4">
+      <label htmlFor="city" className="block text-gray-700 font-bold mb-2">Ville :</label>
+      <input
+      type="text"
+      id="city"
+      value={city}
+      onChange={handleCityChange}
+      className="w-full border border-gray-300 p-2 rounded-md"
+      />
+      </div>
+      
+      
+      <div className="mb-4">
+      <label htmlFor="category" className="block text-gray-700 font-bold mb-2">Catégorie :</label>
+      <input
+      type="text"
+      id="category"
+      value={category}
+      onChange={handleCategoryChange}
+      className="w-full border border-gray-300 p-2 rounded-md"
+      />
+      </div>
+      <button type="submit" className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">
+      Ajouter
+      </button>
+      </form>
+      </div>
+      );
+    }
+    
+    export default CreateProperty;
+    

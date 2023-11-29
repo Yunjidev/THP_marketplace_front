@@ -17,18 +17,26 @@ const Properties = () => {
           }
         });
         if (response.ok) {
-          const jsonData = await response.json();
-          const reversedData = jsonData.reverse();
-          setProperties(reversedData);
+          const responseData = await response.json();
+  
+          // Assurez-vous que responseData est un objet avec la propriété 'properties'
+          if (responseData && Array.isArray(responseData.properties)) {
+            const reversedData = responseData.properties.reverse();
+            setProperties(reversedData);
+          } else {
+            console.error('Les données récupérées ne sont pas au format attendu.');
+          }
         } else {
           throw new Error('Erreur lors de la requête');
         }
       } catch (error) {
-        console.error('Erreur de requête : ', error)
+        console.error('Erreur de requête : ', error);
       }
     };
-    fetchData()
+    fetchData();
   }, []);
+  
+  
 
   return (
     <div>

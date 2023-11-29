@@ -10,24 +10,31 @@ const MyProperties = () => {
   const id = useParams().id;
   const [myProperties, setMyProperties] = useState([]);
 
+  const [error, setError] = useState(null);
+
   const fetchData = async () => {
     try {
       const response = await fetch(API_URL + "/properties", {
         method: 'get',
         headers: {
-          // 'Authorization': `Bearer ${jwtToken}`,
           'Content-Type': 'application/json'
         }
       });
+
       if (response.ok) {
-        const jsonData = await response.json();
-        const reversedData = jsonData.reverse();
-        setMyProperties(reversedData.filter(element => element.user_id == id))
+        const responseData = await response.json();
+        if (Array.isArray(responseData.properties)) {
+          const reversedData = responseData.properties.reverse();
+          setMyProperties(reversedData.filter(element => element.user_id == id));
+        } else {
+          console.error('Les données renvoyées ne contiennent pas de liste de propriétés :', responseData);
+        }
       } else {
         throw new Error('Erreur lors de la requête');
       }
     } catch (error) {
-      console.error('Erreur de requête : ', error)
+      console.error('Erreur de requête : ', error);
+      setError('Erreur lors de la récupération des données. Veuillez réessayer plus tard.');
     }
   };
 
@@ -42,6 +49,7 @@ const MyProperties = () => {
 
   return (
     <div className="container mx-auto mt-8">
+      {error && <p className="text-red-500">{error}</p>}
       <Link to="/createproperty" className="block w-full mb-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-center">
         Ajouter un bien
       </Link>
@@ -57,6 +65,7 @@ const MyProperties = () => {
               <p className="text-gray-200 mb-2">Nombre de pièces : {property.num_rooms}</p>
               <p className="text-gray-200 mb-2">Meublé : {property.furnished ? "Oui" : "Non"}</p>
               <p className="text-gray-200 mb-2">Catégorie : {property.category}</p>
+              <p className="text-gray-200 mb-2">Pays : {property.country?.name ?? 'Non spécifié'}</p>
               <p className="text-green-500 mb-2">Prix : {property.price}</p>
               <div className="flex justify-between items-center mt-4">
                 <Link to={`/updateproperty/${property.id}`} className="text-blue-500 hover:underline">Modifier ce bien</Link>

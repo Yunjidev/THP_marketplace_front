@@ -4,6 +4,8 @@ import { userAtom } from '../../../stores/userAtom';
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../../../stores/apiUrl';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Login() {
   const [, setUser] = useAtom(userAtom);
@@ -16,7 +18,7 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch(API_URL+'/users/sign_in', {
+      const response = await fetch(API_URL + '/users/sign_in', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -24,25 +26,30 @@ function Login() {
         body: JSON.stringify({
           user: {
             email: email,
-            password: password
-          }
+            password: password,
+          },
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
 
-        Cookies.set('token', response.headers.get("Authorization"));
+        Cookies.set('token', response.headers.get('Authorization'));
         Cookies.set('id', data.user.id);
 
         setUser({
           isLoggedIn: true,
-          token: response.headers.get("Authorization"),
-          id: data.user.id
+          token: response.headers.get('Authorization'),
+          id: data.user.id,
         });
-        navigate('/authsuccess');
-        console.log("authentification réussie");
-        console.log(response.headers.get("Authorization"));
+
+        // Afficher une alerte de succès
+        toast.success('Connexion réussie !', { autoClose: 3000 }); // L'alerte se fermera automatiquement après 3 secondes
+
+        // Rediriger vers la page d'accueil
+        navigate('/');
+        console.log('Authentification réussie');
+        console.log(response.headers.get('Authorization'));
       } else {
         setError('Identifiants invalides');
       }
@@ -77,11 +84,15 @@ function Login() {
               required
             />
           </div>
-          <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none">
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none"
+          >
             Se connecter
           </button>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 }

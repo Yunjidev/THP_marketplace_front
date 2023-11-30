@@ -16,6 +16,7 @@ import ShowProperty from './components/Properties/show';
 import MyProperties from './pages/MyProperties';
 import CreateProperty from './pages/MyProperties/create';
 import UpdateProperty from './pages/MyProperties/update';
+import SearchResults from './pages/Search/SearchResults';
 
 //components
 import NavBar from './components/Navbar'
@@ -30,6 +31,7 @@ function App() {
         <NavBar />
         <Routes>
           <Route path="/" element={<Home/>} />
+          <Route path="/search/:term" element={<SearchResults />} />
           <Route path="/property/:id" element={<ShowProperty/>}/>
           <Route path="/myproperties/:id" element={<MyProperties/>}/>
           <Route path="/createproperty" element={<CreateProperty/>}/>

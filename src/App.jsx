@@ -16,13 +16,28 @@ import ShowProperty from './components/Properties/show';
 import MyProperties from './pages/MyProperties';
 import CreateProperty from './pages/MyProperties/create';
 import UpdateProperty from './pages/MyProperties/update';
-
+import Cookies from 'js-cookie';
+import { useAtom } from 'jotai';
+import { userAtom } from './stores/userAtom';
+import { useEffect } from 'react';
 //components
 import NavBar from './components/Navbar'
 
 
 
 function App() {
+  const [, setUser] = useAtom(userAtom);
+
+  useEffect(() => {
+    const token = Cookies.get('token');
+
+    if (token) {
+      setUser({
+        isLoggedIn: true,
+        token: token,
+      });
+    }
+  }, []);
 
   return (
     <>

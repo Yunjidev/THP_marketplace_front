@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useAtom } from 'jotai'
+import { useAtom } from 'jotai';
 import { userAtom } from "../../stores/userAtom";
 import { API_URL } from "../../stores/apiUrl";
 
-const DestroyProperty = ({propertyId, onDelete}) => {
+const DestroyProperty = ({ propertyId, onDelete }) => {
   const navigate = useNavigate();
   const [user] = useAtom(userAtom);
-  const id = propertyId
+  const id = propertyId;
 
   const handleDestroy = async () => {
     try {
@@ -27,12 +27,16 @@ const DestroyProperty = ({propertyId, onDelete}) => {
     } catch (error) {
       console.error('An error occurred while deleting property:', error);
     }
-  }
-
+  };
 
   return (
-    <button onClick={handleDestroy}>Supprimer ce bien</button>
-  )
-}
+    <button
+      onClick={handleDestroy}
+      className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
+    >
+      Supprimer ce bien
+    </button>
+  );
+};
 
-export default DestroyProperty
+export default DestroyProperty;

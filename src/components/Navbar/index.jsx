@@ -1,9 +1,9 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useAtom } from 'jotai';
 import { userAtom } from '../../stores/userAtom';
-import {useAtom} from 'jotai'
-
 import LogoutButton from '../Auth/Logout';
+import immocoin from '../../assets/immocoin.svg';
 
 const NavBar = () => {
   const [userInfo] = useAtom(userAtom);
@@ -11,10 +11,13 @@ const NavBar = () => {
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="font-bold text-xl text-white">
-          ImmoCoin
-        </Link>
-        <div className="space-x-4">
+        <div className="flex items-center">
+          <img src={immocoin} className="h-12 w-auto mr-2" alt="immocoin Logo" />
+          <Link to="/" className="font-bold text-xl text-white">
+            ImmoCoin
+          </Link>
+        </div>
+        <div className="flex items-center text-center space-x-4">
           <Link to="/" className="hover:underline text-white">
             Les biens
           </Link>

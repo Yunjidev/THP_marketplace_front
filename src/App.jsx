@@ -20,9 +20,11 @@ import Cookies from 'js-cookie';
 import { useAtom } from 'jotai';
 import { userAtom } from './stores/userAtom';
 import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //components
 import NavBar from './components/Navbar'
-
+import Footer from './components/Footer'
 
 
 function App() {
@@ -43,6 +45,7 @@ function App() {
     <>
       <Router>
         <NavBar />
+        <ToastContainer />
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/property/:id" element={<ShowProperty/>}/>
@@ -55,6 +58,7 @@ function App() {
           <Route path="/authsuccess" element={<AuthSuccess/>} />
           <Route path="/logoutsuccess" element={<LogoutSuccess/>} />
         </Routes>
+        <Footer />
       </Router>
 
     </>

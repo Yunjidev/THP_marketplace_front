@@ -16,12 +16,8 @@ import ShowProperty from './components/Properties/show';
 import MyProperties from './pages/MyProperties';
 import CreateProperty from './pages/MyProperties/create';
 import UpdateProperty from './pages/MyProperties/update';
-import Cookies from 'js-cookie';
-import { useAtom } from 'jotai';
-import { userAtom } from './stores/userAtom';
-import { useEffect } from 'react';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import SearchResults from './pages/Search/SearchResults';
+
 //components
 import NavBar from './components/Navbar'
 import Footer from './components/Footer'
@@ -50,6 +46,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home/>} />
               <Route path="/property/:id" element={<ShowProperty/>}/>
+              <Route path="/search/:term" element={<SearchResults />} />
               <Route path="/myproperties/:id" element={<MyProperties/>}/>
               <Route path="/createproperty" element={<CreateProperty/>}/>
               <Route path="updateproperty/:id" element={<UpdateProperty/>}/>

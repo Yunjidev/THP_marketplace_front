@@ -8,6 +8,9 @@ function UpdateProperty() {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
+  const [superficie, setSuperficie] = useState(''); // Ajout de la superficie
+  const [numRooms, setNumRooms] = useState(''); // Ajout du nombre de chambres
+  const [furnished, setFurnished] = useState(''); // Ajout de l'indicateur meublé
   const [user] = useAtom(userAtom);
   const navigate = useNavigate();
   const propertyId = useParams().id;
@@ -24,6 +27,18 @@ function UpdateProperty() {
     setDescription(event.target.value);
   };
 
+  const handleSuperficieChange = (event) => {
+    setSuperficie(event.target.value);
+  };
+
+  const handleNumRoomsChange = (event) => {
+    setNumRooms(event.target.value);
+  };
+
+  const handleFurnishedChange = (event) => {
+    setFurnished(event.target.checked);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -32,6 +47,9 @@ function UpdateProperty() {
         title: title,
         price: price,
         description: description,
+        superficie: superficie, // Ajout de la superficie
+        num_rooms: numRooms, // Ajout du nombre de chambres
+        furnished: furnished, // Ajout de l'indicateur meublé
         user_id: user.id
       }
     };
@@ -56,6 +74,7 @@ function UpdateProperty() {
       console.error('Erreur lors de la modification du bien :', error);
     }
   };
+
 
   return (
     <div className="container mx-auto mt-8 mb-8">
@@ -90,6 +109,37 @@ function UpdateProperty() {
             className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
           />
         </div>
+        <div className="mb-4">
+          <label htmlFor="superficie" className="text-gray-200 block mb-2">Superficie :</label>
+          <input
+            type="number"
+            id="superficie"
+            value={superficie}
+            onChange={handleSuperficieChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="numRooms" className="text-gray-200 block mb-2">Nombre de chambres :</label>
+          <input
+            type="number"
+            id="numRooms"
+            value={numRooms}
+            onChange={handleNumRoomsChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="furnished" className="text-gray-200 block mb-2">Meublé :</label>
+          <input
+            type="checkbox"
+            id="furnished"
+            checked={furnished}
+            onChange={handleFurnishedChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
+          />
+        </div>
+
         <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none">
           Modifier
         </button>

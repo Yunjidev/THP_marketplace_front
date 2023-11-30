@@ -49,7 +49,7 @@ const MyProperties = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8">
+    <div className="container mx-auto mt-8 mb-8">
       {error && <p className="text-red-500">{error}</p>}
       <Link to="/createproperty" className="block w-full mb-4 bg-blue-500 text-white py-2 rounded hover:bg-blue-600 text-center">
         Ajouter un bien

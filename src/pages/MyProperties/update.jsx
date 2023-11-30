@@ -58,36 +58,41 @@ function UpdateProperty() {
   };
 
   return (
-    <div>
-      <h2>Modifier ce bien</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Titre :</label>
+    <div className="container mx-auto mt-8 mb-8">
+      <h2 className="text-3xl text-center font-semibold mb-4">Modifier ce bien</h2>
+      <form onSubmit={handleSubmit} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg p-6">
+        <div className="mb-4">
+          <label htmlFor="title" className="text-gray-200 block mb-2">Titre :</label>
           <input
             type="text"
             id="title"
             value={title}
             onChange={handleTitleChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
           />
         </div>
-        <div>
-          <label htmlFor="price">Price :</label>
+        <div className="mb-4">
+          <label htmlFor="price" className="text-gray-200 block mb-2">Prix :</label>
           <input
             type="number"
             id="price"
             value={price}
             onChange={handlePriceChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
           />
         </div>
-        <div>
-          <label htmlFor="description">Description :</label>
+        <div className="mb-4">
+          <label htmlFor="description" className="text-gray-200 block mb-2">Description :</label>
           <textarea
             id="description"
             value={description}
             onChange={handleDescriptionChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:border-blue-500 text-gray-800"
           />
         </div>
-        <button type="submit">Modifier</button>
+        <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none">
+          Modifier
+        </button>
       </form>
     </div>
   );

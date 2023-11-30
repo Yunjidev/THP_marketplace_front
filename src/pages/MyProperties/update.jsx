@@ -12,11 +12,9 @@ function UpdateProperty() {
   const navigate = useNavigate();
   const propertyId = useParams().id;
 
-
-
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
-  }
+  };
 
   const handlePriceChange = (event) => {
     setPrice(event.target.value);
@@ -26,11 +24,10 @@ function UpdateProperty() {
     setDescription(event.target.value);
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const newProperty = {
+    const updatedProperty = {
       property: {
         title: title,
         price: price,
@@ -40,24 +37,23 @@ function UpdateProperty() {
     };
 
     try {
-      const response = await fetch(API_URL + '/properties/' + propertyId, {
+      const response = await fetch(`${API_URL}/properties/${propertyId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `${user.token}`,
         },
-        body: JSON.stringify(newProperty),
+        body: JSON.stringify(updatedProperty),
       });
 
       if (response.ok) {
-        console.log('Le bien a été  modifié avec succès');
-        navigate(`/myproperties/${user.id}`)
-
+        console.log('Le bien a été modifié avec succès');
+        navigate(`/myproperties/${user.id}`);
       } else {
-        console.error("Erreur lors de la modification du bien");
+        console.error('Erreur lors de la modification du bien');
       }
     } catch (error) {
-      console.error("Erreur lors de la modification du bien :", error);
+      console.error('Erreur lors de la modification du bien :', error);
     }
   };
 
@@ -78,7 +74,7 @@ function UpdateProperty() {
           <label htmlFor="price">Price :</label>
           <input
             type="number"
-            id="content"
+            id="price"
             value={price}
             onChange={handlePriceChange}
           />

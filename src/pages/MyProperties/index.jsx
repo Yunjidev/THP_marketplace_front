@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useParams, Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 
@@ -23,6 +24,7 @@ const MyProperties = () => {
 
       if (response.ok) {
         const responseData = await response.json();
+        console.log(responseData)
         if (Array.isArray(responseData.properties)) {
           const reversedData = responseData.properties.reverse();
           setMyProperties(reversedData.filter(element => element.user_id == id));
@@ -43,8 +45,7 @@ const MyProperties = () => {
   }, []);
 
   const handlePropertyDeleted = async () => {
-    // Call this function after the property is successfully deleted
-    await fetchData(); // Fetch the updated list of properties
+    await fetchData();
   };
 
   return (
@@ -65,7 +66,8 @@ const MyProperties = () => {
               <p className="text-gray-200 mb-2">Nombre de pièces : {property.num_rooms}</p>
               <p className="text-gray-200 mb-2">Meublé : {property.furnished ? "Oui" : "Non"}</p>
               <p className="text-gray-200 mb-2">Catégorie : {property.category}</p>
-              <p className="text-gray-200 mb-2">Pays : {property.country?.name ?? 'Non spécifié'}</p>
+              <p className="text-gray-200 mb-2">Pays : {property.country_name ?? 'Non spécifié'}</p>
+              <p className="text-gray-200 mb-2">Ville : {property.city_name ?? 'Non spécifié'}</p>
               <p className="text-green-500 mb-2">Prix : {property.price}</p>
               <div className="flex justify-between items-center mt-4">
                 <Link to={`/updateproperty/${property.id}`} className="text-blue-500 hover:underline">Modifier ce bien</Link>

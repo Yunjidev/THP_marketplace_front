@@ -2,6 +2,12 @@ import './App.css'
 import './index.css';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useAtom } from 'jotai';  // Utiliser l'importation de Jotai ici
+import { userAtom } from "./stores/userAtom";
+import Cookies from 'js-cookie';
+import { useEffect } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

@@ -46,18 +46,20 @@ function App() {
       <Router>
         <NavBar />
         <ToastContainer />
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/property/:id" element={<ShowProperty/>}/>
-          <Route path="/myproperties/:id" element={<MyProperties/>}/>
-          <Route path="/createproperty" element={<CreateProperty/>}/>
-          <Route path="updateproperty/:id" element={<UpdateProperty/>}/>
-          <Route path="/register" element={<Register/>} />
-          <Route path="/login" element={<Login/>} />
-          <Route path="/newpassword" element={<NewPassword/>} />
-          <Route path="/authsuccess" element={<AuthSuccess/>} />
-          <Route path="/logoutsuccess" element={<LogoutSuccess/>} />
-        </Routes>
+          <div  className="main">
+            <Routes>
+              <Route path="/" element={<Home/>} />
+              <Route path="/property/:id" element={<ShowProperty/>}/>
+              <Route path="/myproperties/:id" element={<MyProperties/>}/>
+              <Route path="/createproperty" element={<CreateProperty/>}/>
+              <Route path="updateproperty/:id" element={<UpdateProperty/>}/>
+              <Route path="/register" element={<Register/>} />
+              <Route path="/login" element={<Login/>} />
+              <Route path="/newpassword" element={<NewPassword/>} />
+              <Route path="/authsuccess" element={<AuthSuccess/>} />
+              <Route path="/logoutsuccess" element={<LogoutSuccess/>} />
+            </Routes>
+          </div>
         <Footer />
       </Router>
 
